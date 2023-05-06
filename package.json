@@ -1,0 +1,34 @@
+{
+  "name": "prisma-pgboss",
+  "version": "1.0.0",
+  "description": "A simple P.O.C. to validate compatibility with pg-boss and prisma before integration",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint  . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "prettier-format": "prettier '**/*.{js,json}' --write",
+    "prepare": "husky install"
+  },
+  "author": "lgauthier1",
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.0",
+    "@commitlint/config-conventional": "^17.6.0",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "prettier": "^2.8.3",
+    "prisma": "^4.13.0",
+    "standard": "^17.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.13.0",
+    "chokidar": "^3.5.3",
+    "nodemon": "^2.0.22",
+    "pg-boss": "^9.0.0"
+  }
+}

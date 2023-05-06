@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:15.2
+    container_name: postgresql
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: mydatabase
+    volumes:
+      - ./.pgadata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
