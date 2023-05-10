@@ -6,6 +6,11 @@ import { PrismaClient } from '@prisma/client'
 // sleep function to simulate some async job
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
+async function fileProcessor2(job) {
+  console.log('------------- 2222')
+  console.log(`------------- 2222 job ${job.id} is done`)
+}
+
 async function fileProcessor(job) {
   const prisma = new PrismaClient()
   console.log(`job ${job.id} is running ${job.data.path}}`)
@@ -25,17 +30,25 @@ async function fileProcessor(job) {
 const run = async () => {
   initiProcessHandler()
   const queue = new Queue(
-    'postgres://postgres:mysecretpassword@localhost/mydatabase?schema=public'
+    'postgres://postgres:mysecretpassword@localhost/mydatabase?schema=public',
+    'file-to-process',
+    fileProcessor
+  )
+  const queue2 = new Queue(
+    'postgres://postgres:mysecretpassword@localhost/mydatabase?schema=public',
+    'file-to-process-2',
+    fileProcessor2
   )
   await queue.start()
-  await queue.initQueue('file-to-process', fileProcessor)
+  await queue2.start()
 
-  watch(process.env.WATCH_FOLDER || 'watch_folder', { ignoreInitial: true }).on(
-    'add',
-    (path) => {
-      queue.addJob('file-to-process', { path })
-    }
-  )
+  watch(process.env.WATCH_FOLDER || 'watch_folder', { ignoreInitial: true })
+    .on('add', (path) => {
+      queue.addJob({ path })
+    })
+    .on('add', (path) => {
+      queue2.addJob({ path })
+    })
 }
 
 run()
